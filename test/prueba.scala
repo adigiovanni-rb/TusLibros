@@ -4,6 +4,11 @@ import scala.collection.mutable
 class prueba extends PlaySpec {
 
   "A Stack" must {
+
+
+
+
+
     "pop values in last-in-first-out order" in {
       val stack = new mutable.Stack[Int]
       stack.push(1)
