@@ -1,6 +1,6 @@
 package models
 
-case class ShoppingCar() {
+case class ShoppingCart() {
 
   private var alistOfProducts = List[IProduct]()
 
