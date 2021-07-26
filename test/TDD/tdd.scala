@@ -24,9 +24,18 @@ class tdd extends PlaySpec {
       val aItem2: IProduct = Book(name = "Señor de los Anillos")
       aShoppingCar.add(aItem)
       aShoppingCar.add(aItem2)
-      aShoppingCar.contain(aItem) mustBe true
-      aShoppingCar.contain(aItem2) mustBe true
+      aShoppingCar.contain(aItem) && aShoppingCar.contain(aItem2) mustBe true
     }
+
+    "Agrego más de 1 ejemplar al mismo y los contiene" in {
+      val aShoppingCar = ShoppingCar()
+      val aItem: IProduct = Book(name = "Harry Potter")
+      aItem.amount = 2
+      aShoppingCar.add(aItem)
+      aShoppingCar.find(aItem).amount = 2 mustBe true
+    }
+
+
 
     /*
 
@@ -34,6 +43,8 @@ class tdd extends PlaySpec {
     1. Comienzo shopping con carrito vacío
 2. Agrego un libro y el carrito lo contiene
 3. Agrego 2 o más libros diferentes y los contiene
+
+
 4. Agrego más de 1 ejemplar al mismo y los contiene
 5. Agrego un libro más de una vez y los contiene
 6. No puedo agregar libros que no pertenecen a la editorial
