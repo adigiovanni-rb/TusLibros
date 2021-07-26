@@ -7,32 +7,37 @@ class tdd extends PlaySpec {
   "TusLibros system must have" must {
 
     "Start shopping with an empty cart" in {
-      val aShoppingCart = ShoppingCart()
+      val aShoppingCart = ShoppingCart(List())
       aShoppingCart.isEmpty() mustBe true
     }
 
     "Add a new item and the cart contain that" in {
-      val aShoppingCart = ShoppingCart()
       val aItem: IProduct = Book(name = "Harry Potter")
-      aShoppingCart.add(aItem)
+      val books = List(aItem)
+      val aShoppingCart = ShoppingCart(books)
+
+//      aShoppingCart.add(aItem)
       aShoppingCart.contain(aItem) mustBe true
     }
 
     "Add two items and the cart contain that" in {
-      val aShoppingCart = ShoppingCart()
       val aItem: IProduct = Book(name = "Harry Potter")
       val aItem2: IProduct = Book(name = "Señor de los Anillos")
-      aShoppingCart.add(aItem)
-      aShoppingCart.add(aItem2)
+      val books = List(aItem, aItem2)
+      val aShoppingCart = ShoppingCart(books)
+
       aShoppingCart.contain(aItem) && aShoppingCart.contain(aItem2) mustBe true
     }
 
     "Agrego más de 1 ejemplar al mismo y los contiene" in {
-      val aShoppingCart = ShoppingCart()
-      val aItem: IProduct = Book(name = "Harry Potter")
-      aItem.amount = 2
+      val amount = 2
+      val aItem: IProduct = Book(name = "Harry Potter", amount = amount)
+      val books = List(aItem)
+
+      val aShoppingCart = ShoppingCart(books)
+
       aShoppingCart.add(aItem)
-      aShoppingCart.find(aItem).amount = 2 mustBe true
+      aShoppingCart.alistOfProducts.head.amount mustBe amount
     }
 
 

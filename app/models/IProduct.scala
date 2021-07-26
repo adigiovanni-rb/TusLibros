@@ -1,7 +1,9 @@
 package models
 
-trait IProduct {
-  var amount: Int = 1
+sealed trait IProduct {
+  val amount: Int
 }
 
-case class Book(name: String) extends IProduct
+case class Book(
+  amount: Int = 1,
+  name: String) extends IProduct
