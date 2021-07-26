@@ -1,19 +1,27 @@
 package models
 
-case class ShoppingCart(alistOfProducts: List[IProduct] = List()) {
+case class ShoppingCart() {
 
-//  private var alistOfProducts = List[IProduct]()
+private var aListOfProducts = List[IProduct]()
+
 
   def contain(item: IProduct):Boolean = {
-    alistOfProducts.contains(item)
+    aListOfProducts.contains(item)
   }
 
-  def add(item: IProduct) = {
+  def add(aItem: IProduct) = {
+    aListOfProducts = aListOfProducts:+ aItem
+  }
+
+/*
+  def addWithQuantity(aProduct: IProduct, aQuantity: Int) = {
 
     List(1,2,3) ::: List(4)
-    alistOfProducts.appended(item)
+    aListOfProducts.appended(item)
     // alistOfProducts.::(item)
   }
+
+ */
 
 //  def find(item: IProduct): IProduct = {
 //  item match {
@@ -25,7 +33,7 @@ case class ShoppingCart(alistOfProducts: List[IProduct] = List()) {
 //  }
 
   def isEmpty() : Boolean = {
-    alistOfProducts.isEmpty
+    aListOfProducts.isEmpty
   }
 
 }
