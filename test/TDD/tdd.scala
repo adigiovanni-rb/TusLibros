@@ -24,16 +24,15 @@ class tdd extends PlaySpec {
       val aShoppingCart = ShoppingCart()
       aShoppingCart.add(aItem)
       aShoppingCart.add(aItem2)
-
       aShoppingCart.contain(aItem) && aShoppingCart.contain(aItem2) mustBe true
     }
 
-    "Agrego más de 1 ejemplar al mismo y los contiene" in {
-      val amount = 2
+    "Add more than one item of the same product and the cart contains it" in {
+      val aQuantity = 2
       val aItem: IProduct = Book(name = "Harry Potter")
       val aShoppingCart = ShoppingCart()
-      aShoppingCart.add(aItem)
-      true mustBe amount
+      aShoppingCart.addWithQuantity(aItem,aQuantity)
+      aShoppingCart.countUniqueItem(aItem) mustBe aQuantity
     }
 
 

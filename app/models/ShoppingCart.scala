@@ -13,24 +13,18 @@ private var aListOfProducts = List[IProduct]()
     aListOfProducts = aListOfProducts:+ aItem
   }
 
-/*
-  def addWithQuantity(aProduct: IProduct, aQuantity: Int) = {
 
-    List(1,2,3) ::: List(4)
-    aListOfProducts.appended(item)
-    // alistOfProducts.::(item)
+  def addWithQuantity(aItem: IProduct, aQuantity: Int) = {
+// validar que exista en catalago
+    // validar cantidad mayor a 0
+    for (_ <- 1 to aQuantity) {
+      aListOfProducts = aListOfProducts:+ aItem
+    }
   }
 
- */
-
-//  def find(item: IProduct): IProduct = {
-//  item match {
-//    case item: Book => alistOfProducts.find(item)
-//  }
-    List(1,2,3) ::: List(4)
-//    alistOfProducts.
-    // alistOfProducts.::(item)
-//  }
+  def countUniqueItem(aItem: IProduct): Int = {
+    aListOfProducts.filter(_.name.equals(aItem.name)).length
+  }
 
   def isEmpty() : Boolean = {
     aListOfProducts.isEmpty
