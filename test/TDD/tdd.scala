@@ -1,22 +1,24 @@
 package TDD
 
-import models.{Book, Cashier, Catalog, CreditCard, IProduct, MerchantProcessorDummy, ShoppingCart}
+import models.{Book, Cashier, Catalog, CreditCard, IProduct, MerchantProcessor, ShoppingCart}
 import org.scalatestplus.play.PlaySpec
 
-import java.util.Calendar
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.{Calendar, Date}
 
 class tdd extends PlaySpec {
   "TusLibros system must have" must {
     val aCatalog = Catalog()
-    val aValidItem: IProduct = Book(name = "Harry Potter")
-    val anotherValidItem: IProduct = Book(name = "Señor de los Anillos")
+    val aValidItem: IProduct = Book(name = "Harry Potter", price = BigDecimal(250.0))
+    val anotherValidItem: IProduct = Book(name = "Señor de los Anillos", price = BigDecimal(500.0))
     aCatalog.addValidItem(aValidItem)
     aCatalog.addValidItem(anotherValidItem)
-    val cashier = Cashier()
-    val creditCard = CreditCard()
-    val merchantProcessorDummy = MerchantProcessorDummy()
+    val merchantProcessor = MerchantProcessor()
+    val formatDate = new SimpleDateFormat("yyyy-MM-dd")
+    val validDueDate = formatDate.parse("2025-01-12")
+    val creditCard = CreditCard(validDueDate)
     val calendar = Calendar.getInstance()
-
 
     "Start shopping with an empty cart" in {
       val aEmptyShoppingCart = ShoppingCart()
@@ -56,7 +58,7 @@ class tdd extends PlaySpec {
     }
 
     "I cannot add books that do not belong to the publisher" in {
-      val aInvalidItem: IProduct = Book(name = "TU no vas")
+      val aInvalidItem: IProduct = Book(name = "TU no vas", price = BigDecimal(300.00))
       val aShoppingCart = ShoppingCart()
       aShoppingCart.addCatalog(aCatalog)
       val thrown = intercept[Exception] {
@@ -77,18 +79,38 @@ class tdd extends PlaySpec {
 
     "An empty cart cannot be checked out"in {
         val aEmptyShoppingCart = ShoppingCart()
+        val cashier = Cashier(aEmptyShoppingCart, creditCard, calendar.getTime, merchantProcessor)
         val thrown = intercept[Exception] {
-              cashier.processSale(aEmptyShoppingCart, creditCard, calendar.getTime, merchantProcessorDummy)
+              cashier.checkout()
           }
         thrown.getMessage mustBe "Carro de compras vacio"
     }
 
     "no se pueda hacer checkout de una tarjeta vencida"in {
-    true mustBe false
+      val aShoppingCart = ShoppingCart()
+      aShoppingCart.addCatalog(aCatalog)
+      aShoppingCart.add(aValidItem)
+
+      val invalidDueDate = formatDate.parse("2021-06-28")
+      val invalidCreditCard = creditCard.copy(dueDate = invalidDueDate)
+
+      val cashier = Cashier(aShoppingCart, invalidCreditCard, calendar.getTime, merchantProcessor)
+
+      val thrown = intercept[Exception] {
+        cashier.checkout()
+      }
+      thrown.getMessage mustBe "Tarjeta de crédito vencida."
     }
 
     "el cajero calcule el total a cobrar correctamente"in {
-      true mustBe false
+      val aShoppingCart = ShoppingCart()
+      aShoppingCart.addCatalog(aCatalog)
+      aShoppingCart.add(anotherValidItem)
+      aShoppingCart.addWithQuantity(aValidItem,2)
+
+      val cashier = Cashier(aShoppingCart, creditCard, calendar.getTime, merchantProcessor)
+
+      cashier.checkTotalPrice(aShoppingCart) mustBe BigDecimal(1000.0)
     }
 
     "no se puede hacer checkout con el merchanse procesor caido"in {

@@ -1,3 +1,7 @@
 package models
 
-case class CreditCard()
+import org.joda.time.LocalDate
+
+import java.util.Date
+
+case class CreditCard(dueDate: Date)

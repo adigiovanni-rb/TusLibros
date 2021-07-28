@@ -2,8 +2,10 @@ package models
 
 case class ShoppingCart() {
 
-private var aListOfProducts = List[IProduct]()
-private var aCatalog: Catalog = Catalog()
+  private var aListOfProducts = List[IProduct]()
+  private var aCatalog: Catalog = Catalog()
+
+  def getListProducts(): List[IProduct] = aListOfProducts
 
   def addCatalog(catalog: Catalog): Unit ={
     aCatalog = catalog
