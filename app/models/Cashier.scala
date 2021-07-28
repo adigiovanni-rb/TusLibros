@@ -11,6 +11,7 @@ case class Cashier(
   def checkout(): Boolean = {
     validateShoppingCart(shoppingCart)
     validateCreditCard(creditCard, date)
+    merchantProcessor.execute
     true
   }
 

@@ -1,6 +1,6 @@
 package TDD
 
-import models.{Book, Cashier, Catalog, CreditCard, IProduct, MerchantProcessor, ShoppingCart}
+import models.{Book, Cashier, Catalog, CreditCard, IProduct, MerchantProcessor, MerchantProcessorDown, ShoppingCart}
 import org.scalatestplus.play.PlaySpec
 
 import java.text.SimpleDateFormat
@@ -114,12 +114,24 @@ class tdd extends PlaySpec {
     }
 
     "no se puede hacer checkout con el merchanse procesor caido"in {
+      val merchantProcessorDown = MerchantProcessorDown()
+      val aShoppingCart = ShoppingCart()
+      aShoppingCart.addCatalog(aCatalog)
+      aShoppingCart.add(anotherValidItem)
+      aShoppingCart.addWithQuantity(aValidItem,2)
+      val cashier = Cashier(aShoppingCart, creditCard, calendar.getTime, merchantProcessorDown)
+
+      val thrown = intercept[Exception] {
+        cashier.checkout()
+      }
+      thrown.getMessage mustBe "El servicio MerchantProcessor esta caido"
+    }
+
+    "no se puede implementar con tarjeta robada" in {
       true mustBe false
     }
-    "no se puede implementar con tarjeta robada"in {
-      true mustBe false
-    }
-    "merchan proccesor recibe todo correctamenet"in {
+
+    "merchan proccesor recibe todo correctamenet" in {
       true mustBe false
     }
 
