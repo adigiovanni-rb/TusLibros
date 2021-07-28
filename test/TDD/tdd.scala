@@ -1,16 +1,22 @@
 package TDD
 
-import models.{Book, Catalog, IProduct, ShoppingCart}
-
+import models.{Book, Cashier, Catalog, CreditCard, IProduct, MerchantProcessorDummy, ShoppingCart}
 import org.scalatestplus.play.PlaySpec
+
+import java.util.Calendar
 
 class tdd extends PlaySpec {
   "TusLibros system must have" must {
     val aCatalog = Catalog()
     val aValidItem: IProduct = Book(name = "Harry Potter")
-    val anotherItemValid: IProduct = Book(name = "Señor de los Anillos")
+    val anotherValidItem: IProduct = Book(name = "Señor de los Anillos")
     aCatalog.addValidItem(aValidItem)
-    aCatalog.addValidItem(anotherItemValid)
+    aCatalog.addValidItem(anotherValidItem)
+    val cashier = Cashier()
+    val creditCard = CreditCard()
+    val merchantProcessorDummy = MerchantProcessorDummy()
+    val now = Calendar.getInstance()
+    val currentMinute = now.get(Calendar.MINUTE)
 
 
     "Start shopping with an empty cart" in {
@@ -29,8 +35,8 @@ class tdd extends PlaySpec {
       val aShoppingCart = ShoppingCart()
       aShoppingCart.addCatalog(aCatalog)
       aShoppingCart.add(aValidItem)
-      aShoppingCart.add(anotherItemValid)
-      aShoppingCart.contain(aValidItem) && aShoppingCart.contain(anotherItemValid) mustBe true
+      aShoppingCart.add(anotherValidItem)
+      aShoppingCart.contain(aValidItem) && aShoppingCart.contain(anotherValidItem) mustBe true
     }
 
     "Add more than one item of the same product and the cart contains it" in {
@@ -72,10 +78,13 @@ class tdd extends PlaySpec {
       thrown.getMessage mustBe s"Cantidad: $aQuantity no permitida"
     }
 
-"no se pueda hacer checkout de un carrito vacio"in {
-
-  true mustBe false
-}
+    "an empty cart cannot be checked out"in {
+        val aEmptyShoppingCart = ShoppingCart()
+        val thrown = intercept[Exception] {
+              cashier.processSale(aEmptyShoppingCart, creditCard, now.getTime, merchantProcessorDummy)
+          }
+        thrown.getMessage mustBe "Carro de compras vacio"
+    }
 
     "no se pueda hacer checkout de una tarjeta vencida"in {
     true mustBe false
