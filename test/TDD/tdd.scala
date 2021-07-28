@@ -35,18 +35,19 @@ class tdd extends PlaySpec {
       aShoppingCart.countUniqueItem(aItem) mustBe aQuantity
     }
 
-
+    "Add more than one item of the same product at different times and the cart contains it" in {
+      val aQuantity = 2
+      val aItem: IProduct = Book(name = "Harry Potter")
+      val aShoppingCart = ShoppingCart()
+      aShoppingCart.addWithQuantity(aItem,aQuantity)
+      aShoppingCart.addWithQuantity(aItem,aQuantity)
+      aShoppingCart.countUniqueItem(aItem) mustBe (aQuantity*2)
+    }
 
     /*
 
     los test que segun hay
-    1. Comienzo shopping con carrito vacío
-2. Agrego un libro y el carrito lo contiene
-3. Agrego 2 o más libros diferentes y los contiene
 
-
-4. Agrego más de 1 ejemplar al mismo y los contiene
-5. Agrego un libro más de una vez y los contiene
 6. No puedo agregar libros que no pertenecen a la editorial
 7. Sólo puedo agregar cantidades estrictamente positivas de libros
 
