@@ -2,6 +2,8 @@ package TDD
 
 import models.{Book, Catalog, IProduct, ShoppingCart}
 import org.junit.Assert.assertThrows
+import org.mockito.ArgumentMatchers.any
+import org.scalatest.Matchers.assertThrows
 import org.scalatestplus.play.PlaySpec
 
 class tdd extends PlaySpec {
@@ -53,11 +55,13 @@ class tdd extends PlaySpec {
     }
 
     "I cannot add books that do not belong to the publisher" in {
-      val aInvalidtem: IProduct = Book(name = "TU no vas")
+      val aInvalidItem: IProduct = Book(name = "TU no vas")
       val aShoppingCart = ShoppingCart()
       aShoppingCart.addCatalog(aCatalog)
-      aShoppingCart.add(aInvalidtem)
-      aShoppingCart.checkItemInCart(aItemValid) assertThrows
+      val thrown = intercept[Exception] {
+        aShoppingCart.add(aInvalidItem)
+      }
+      thrown.getMessage mustBe s"No existe item: ${aInvalidItem.name} en catalago"
  }
 
 
