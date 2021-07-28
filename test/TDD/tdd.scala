@@ -15,8 +15,7 @@ class tdd extends PlaySpec {
     val cashier = Cashier()
     val creditCard = CreditCard()
     val merchantProcessorDummy = MerchantProcessorDummy()
-    val now = Calendar.getInstance()
-    val currentMinute = now.get(Calendar.MINUTE)
+    val calendar = Calendar.getInstance()
 
 
     "Start shopping with an empty cart" in {
@@ -41,21 +40,19 @@ class tdd extends PlaySpec {
 
     "Add more than one item of the same product and the cart contains it" in {
       val aQuantity = 2
-      val aItem: IProduct = Book(name = "Harry Potter")
       val aShoppingCart = ShoppingCart()
       aShoppingCart.addCatalog(aCatalog)
-      aShoppingCart.addWithQuantity(aItem,aQuantity)
-      aShoppingCart.countUniqueItem(aItem) mustBe aQuantity
+      aShoppingCart.addWithQuantity(aValidItem,aQuantity)
+      aShoppingCart.countUniqueItem(aValidItem) mustBe aQuantity
     }
 
     "Add more than one item of the same product at different times and the cart contains it" in {
       val aQuantity = 2
-      val aItem: IProduct = Book(name = "Harry Potter")
       val aShoppingCart = ShoppingCart()
       aShoppingCart.addCatalog(aCatalog)
-      aShoppingCart.addWithQuantity(aItem,aQuantity)
-      aShoppingCart.addWithQuantity(aItem,aQuantity)
-      aShoppingCart.countUniqueItem(aItem) mustBe (aQuantity*2)
+      aShoppingCart.addWithQuantity(aValidItem,aQuantity)
+      aShoppingCart.addWithQuantity(aValidItem,aQuantity)
+      aShoppingCart.countUniqueItem(aValidItem) mustBe (aQuantity*2)
     }
 
     "I cannot add books that do not belong to the publisher" in {
@@ -78,10 +75,10 @@ class tdd extends PlaySpec {
       thrown.getMessage mustBe s"Cantidad: $aQuantity no permitida"
     }
 
-    "an empty cart cannot be checked out"in {
+    "An empty cart cannot be checked out"in {
         val aEmptyShoppingCart = ShoppingCart()
         val thrown = intercept[Exception] {
-              cashier.processSale(aEmptyShoppingCart, creditCard, now.getTime, merchantProcessorDummy)
+              cashier.processSale(aEmptyShoppingCart, creditCard, calendar.getTime, merchantProcessorDummy)
           }
         thrown.getMessage mustBe "Carro de compras vacio"
     }
@@ -93,6 +90,19 @@ class tdd extends PlaySpec {
     "el cajero calcule el total a cobrar correctamente"in {
       true mustBe false
     }
+
+    "no se puede hacer checkout con el merchanse procesor caido"in {
+      true mustBe false
+    }
+    "no se puede implementar con tarjeta robada"in {
+      true mustBe false
+    }
+    "merchan proccesor recibe todo correctamenet"in {
+      true mustBe false
+    }
+
+
+
 
   }
 }
