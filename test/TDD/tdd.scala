@@ -7,9 +7,9 @@ import org.scalatestplus.play.PlaySpec
 class tdd extends PlaySpec {
   "TusLibros system must have" must {
     val aCatalog = Catalog()
-    val aItemValid: IProduct = Book(name = "Harry Potter")
+    val aValidItem: IProduct = Book(name = "Harry Potter")
     val anotherItemValid: IProduct = Book(name = "Señor de los Anillos")
-    aCatalog.addValidItem(aItemValid)
+    aCatalog.addValidItem(aValidItem)
     aCatalog.addValidItem(anotherItemValid)
 
 
@@ -21,16 +21,16 @@ class tdd extends PlaySpec {
     "Add a new item and the cart contain that" in {
       val aShoppingCart = ShoppingCart()
       aShoppingCart.addCatalog(aCatalog)
-      aShoppingCart.add(aItemValid)
-      aShoppingCart.contain(aItemValid) mustBe true
+      aShoppingCart.add(aValidItem)
+      aShoppingCart.contain(aValidItem) mustBe true
     }
 
     "Add two items and the cart contain that" in {
       val aShoppingCart = ShoppingCart()
       aShoppingCart.addCatalog(aCatalog)
-      aShoppingCart.add(aItemValid)
+      aShoppingCart.add(aValidItem)
       aShoppingCart.add(anotherItemValid)
-      aShoppingCart.contain(aItemValid) && aShoppingCart.contain(anotherItemValid) mustBe true
+      aShoppingCart.contain(aValidItem) && aShoppingCart.contain(anotherItemValid) mustBe true
     }
 
     "Add more than one item of the same product and the cart contains it" in {
@@ -61,6 +61,16 @@ class tdd extends PlaySpec {
       }
       thrown.getMessage mustBe s"No existe item: ${aInvalidItem.name} en catalago"
  }
+
+    "I can only add strictly positive amounts of books" in {
+      val aQuantity = -1
+      val aShoppingCart = ShoppingCart()
+      aShoppingCart.addCatalog(aCatalog)
+      val thrown = intercept[Exception] {
+        aShoppingCart.addWithQuantity(aValidItem, aQuantity)
+      }
+      thrown.getMessage mustBe s"Cantidad: $aQuantity no permitida"
+    }
 
 
 

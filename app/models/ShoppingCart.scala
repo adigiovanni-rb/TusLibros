@@ -14,26 +14,27 @@ private var aCatalog: Catalog = Catalog()
   }
 
   def add(aItem: IProduct) = {
-      aCatalog.checkInCatalog(aItem) match {
-        case true => aListOfProducts = aListOfProducts :+ aItem
-        case false => throw new Exception(s"No existe item: ${aItem.name} en catalago")
+    validateInCatalog(aItem)
+    aListOfProducts = aListOfProducts :+ aItem
+  }
+
+  def addWithQuantity(aItem: IProduct, aQuantity: Int) = {
+
+    validateQuantity(aQuantity)
+    validateInCatalog(aItem)
+    for (_ <- 1 to aQuantity) {
+          aListOfProducts = aListOfProducts:+ aItem
     }
   }
 
 
+  def validateQuantity(aQuantity: Int): Unit = {
+    if(aQuantity<0) throw new Exception(s"Cantidad: $aQuantity no permitida")
+  }
 
-
-  def addWithQuantity(aItem: IProduct, aQuantity: Int) = {
-
-    aCatalog.checkInCatalog(aItem) match {
-      case true => {
-        for (_ <- 1 to aQuantity) {
-          aListOfProducts = aListOfProducts:+ aItem
-        }
-      }
-      case false => throw new Exception(s"No existe item: ${aItem.name} en catalago")
-    }
-      }
+  def validateInCatalog(aItem: IProduct): Unit = {
+    if(!aCatalog.checkInCatalog(aItem)) throw new Exception(s"No existe item: ${aItem.name} en catalago")
+  }
 
   def countUniqueItem(aItem: IProduct): Int = {
     aListOfProducts.filter(_.name.equals(aItem.name)).length
