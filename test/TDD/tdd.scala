@@ -72,29 +72,18 @@ class tdd extends PlaySpec {
       thrown.getMessage mustBe s"Cantidad: $aQuantity no permitida"
     }
 
+"no se pueda hacer checkout de un carrito vacio"in {
 
+  true mustBe false
+}
 
+    "no se pueda hacer checkout de una tarjeta vencida"in {
+    true mustBe false
+    }
 
-
-    /*
-
-    los test que segun hay
-
-6.
-7. Sólo puedo agregar cantidades estrictamente positivas de libros
-
-
-POR SUMAR
-
-no se pueda hacer checkout de un carrito vacio
-no se pueda hacer checkout de una tarjeta vencida
-el cajero calcule el total a cobrar correctamente
-
-
-     */
-
-
-
+    "el cajero calcule el total a cobrar correctamente"in {
+      true mustBe false
+    }
 
   }
 }
