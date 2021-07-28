@@ -1,9 +1,7 @@
 package TDD
 
 import models.{Book, Catalog, IProduct, ShoppingCart}
-import org.junit.Assert.assertThrows
-import org.mockito.ArgumentMatchers.any
-import org.scalatest.Matchers.assertThrows
+
 import org.scalatestplus.play.PlaySpec
 
 class tdd extends PlaySpec {

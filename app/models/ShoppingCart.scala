@@ -24,6 +24,7 @@ private var aCatalog: Catalog = Catalog()
 
 
   def addWithQuantity(aItem: IProduct, aQuantity: Int) = {
+
     aCatalog.checkInCatalog(aItem) match {
       case true => {
         for (_ <- 1 to aQuantity) {
