@@ -1,20 +1,21 @@
-package bookTestDrivenDevelopment
+package TusLisbrosTestDrivenDevelopment
 
 import models._
 import org.scalatestplus.play.PlaySpec
-import controllers.TusLibrosAplication
+import controllers.YourBooksApp
 import org.mockito.ArgumentMatchers.any
 import play.api.mvc.ControllerComponents
 
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-class interfaceShop extends PlaySpec {
+class YourBooksTestInterface extends PlaySpec {
 
   private val CLIENT_ID_IS_NOT_VALID = "Client ID is not valid"
 
   "TusLibros system must have" must {
-    val tusLibrosAplication = new TusLibrosAplication(factory.clients())
+    val yourBooksFactory = new YourBooksFactory()
+    val yourBooksApp = new YourBooksApp(any[ControllerComponents], yourBooksFactory.getClients())
 
 
 
@@ -22,7 +23,7 @@ class interfaceShop extends PlaySpec {
       val clientIDNotValid = "notValidID"
       val passwordValid = "validPassword"
       val thrown = intercept[Exception] {
-        tusLibrosAplication.createCart(clientIDNotValid, passwordValid)
+        yourBooksApp.createCart(clientIDNotValid, passwordValid)
       }
       thrown.getMessage mustBe CLIENT_ID_IS_NOT_VALID
     }
@@ -31,7 +32,7 @@ class interfaceShop extends PlaySpec {
       val clientIDValid = "validID"
       val passwordNotValid = "notValidPassword"
       val thrown = intercept[Exception] {
-        tusLibrosAplication.createCart(clientIDValid, passwordNotValid)
+        yourBooksApp.createCart(clientIDValid, passwordNotValid)
       }
       thrown.getMessage mustBe CLIENT_ID_IS_NOT_VALID
     }

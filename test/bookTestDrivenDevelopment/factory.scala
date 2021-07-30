@@ -1,5 +1,0 @@
-package bookTestDrivenDevelopment
-
-object factory {
-
-}

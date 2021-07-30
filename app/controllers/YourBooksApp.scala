@@ -10,12 +10,9 @@ import javax.inject._
  * application's home page.
  */
 @Singleton
-class TusLibrosAplication @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class YourBooksApp @Inject()(cc: ControllerComponents, clients : Map[String, String]) extends AbstractController(cc) {
   private val CLIENT_ID_IS_NOT_VALID = "Client ID is not valid"
   private val CLIENT_PASSWORD_IS_NOT_VALID = "Client password is not valid"
-
-
-  val clients: Map(String, String)
 
   /**
    * Create an Action to render an HTML page with a welcome message.
